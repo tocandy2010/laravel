@@ -40,14 +40,16 @@ class HomeController extends Controller
         if(empty($data['title']) || empty($data["content"])){
             return redirect('/home/create');
         }
+        $time = time();
         $home = new home();
         $home->title = $data['title'];
         $home->content = $data['content'];
-        $home->time = time();
+        $home->time = $time;
         if($home->save()===true){
             return redirect('/home');
         }else{
-            return redirect('/home/create');
+            $error = "新增失敗";
+            return redirect('/home/create')->with('error',$error);
         }
     }
 
@@ -59,7 +61,9 @@ class HomeController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = home::find($id);
+        $data->time = $data->time>$data->updatetime?$data->time:$data->updatetime;
+        return view('home.show',compact('data'));
     }
 
     /**
@@ -84,20 +88,26 @@ class HomeController extends Controller
     public function update(Request $request, $id)
     {
         $req = $request->only(['title','content']);
+        $flag = false;
         $data = home::find($id);
-       if($req['title'] !== $data->title){
-            $data->title = $req['title'];
-            $data->time = time();
+       if($req['title'] !== $data->title || $req['content'] !== $data->content){
+            $flag = true;
        }
-       if($req['title'] !== $data->title){
-            $data->title = $req['title'];
-            $data->time = time();
-        }
         
-        if($data->save()){
-            return redirect('/home');
+
+        if($flag === true){
+            $data->title = $req['title'];
+            $data->content = $req['content'];
+            $data->updatetime = time();
+            if($data->save()){
+                return redirect('/home');
+            }else{
+                $error="修改失敗";
+                return redirect("/home/{$id}/edit")->with('error',$error);
+            }
         }else{
-            return redirect("/home/{$id}/edit");
+            return redirect('/home');
+            
         }
 
         
@@ -111,6 +121,20 @@ class HomeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = home::find($id);
+        if(!empty($data)){
+            $data->delete();
+            return redirect('/home');
+        }else{
+            $error="刪除失敗";
+            return redirect("/home/{$id}/del")->with('error',$error);
+        }
     }
+
+    public function delete($id)
+    {
+        $data = home::find($id);
+        return view('home.del',compact('data'));
+    }
+
 }

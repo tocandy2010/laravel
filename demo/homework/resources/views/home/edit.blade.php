@@ -12,7 +12,7 @@
 
 <form class="form-horizontal" action="/home/{{$data->home_id}}" method="post">
             @csrf
-            @method('PUT');
+            @method('PUT')
                 <fieldset>
                 
                 <!-- Form Name -->
@@ -31,7 +31,7 @@
                 <div class="form-group">
                   <label class="col-md-4 control-label" for="">content</label>
                   <div class="col-md-4">                     
-                    <textarea class="form-control" id=""  name="content">{{$data->content}}</textarea>
+                    <textarea class="form-control" id="" style="resize:none;height:500px;overflow-y:scroll;"  name="content">{{$data->content}}</textarea>
                   </div>
                 </div>
                 
@@ -41,6 +41,9 @@
                   <div class="col-md-8">
                     <button id=""  class="btn btn-success">edit</button>
                     <button  type='button' id='cancel' class="btn btn-danger">Cancel</button>
+                    @if(Session::has('error'))
+                      <span style="color:darkred">{{session('error')}}</span>
+                    @endif
                   </div>
                 </div>
                 

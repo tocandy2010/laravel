@@ -11,4 +11,5 @@
 |
 */
 
+Route::get('/home/{id}/del','HomeController@delete');
 Route::resource('/home','HomeController');

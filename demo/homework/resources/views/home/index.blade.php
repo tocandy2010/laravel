@@ -19,6 +19,7 @@
         <th>No</th>
         <th>title</th>
         <th>time</th>
+        <th>updatetime</th>
         <th>修改</th>
       </tr>
     </thead>
@@ -26,10 +27,13 @@
         @foreach($data as $k=>$v)
       <tr>
         <td>{{$v->home_id}}</td>
-        <td><a href='#'>{{$v->title}}</a></td>
+        <td><a href='/home/{{$v->home_id}}'>{{$v->title}}</a></td>
         <td>{{date('Y-m-d H:i:s',$v->time)}}</td>
+        <td>{{date('Y-m-d H:i:s',$v->updatetime)}}</td>
         <td><a href="/home/{{$v->home_id}}/edit"><button type="text" class="btn btn-info">Edit</button></a></td>
-        <td><button type="button" class="btn btn-danger">Delete</button></td>
+          @csrf
+          @method('delete')
+          <td><a href="/home/{{$v->home_id}}/del"><button  class="btn btn-danger" >Delete</button ></td>
       </tr>
       @endforeach
     </tbody>

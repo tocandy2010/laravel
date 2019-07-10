@@ -10,18 +10,19 @@
 </head>
 <body>
 
-        <form class="form-horizontal" action="/home" method="post">
+<form class="form-horizontal" action="/home/{{$data->home_id}}" method="post">
             @csrf
+            @method('DELETE')
                 <fieldset>
                 
                 <!-- Form Name -->
-                <legend>新增公告</legend>
+                <legend style='text-align:center;color:darkred'>刪除公告</legend>
                 
                 <!-- Text input-->
                 <div class="form-group">
                   <label class="col-md-4 control-label" for="textinput">title</label>  
                   <div class="col-md-4">
-                  <input id="textinput" name="title" type="text" placeholder="" class="form-control input-md">
+                  <input id="textinput" name="title" value="{{$data->title}}" type="text" placeholder="" class="form-control input-md">
                     
                   </div>
                 </div>
@@ -30,7 +31,7 @@
                 <div class="form-group">
                   <label class="col-md-4 control-label" for="">content</label>
                   <div class="col-md-4">                     
-                    <textarea class="form-control" style="resize:none;height:500px;overflow-y:scroll;" name="content"></textarea>
+                    <textarea class="form-control" style="resize:none;height:500px;overflow-y:scroll;"  name="content">{{$data->content}}</textarea>
                   </div>
                 </div>
                 
@@ -38,8 +39,8 @@
                 <div class="form-group">
                   <label class="col-md-4 control-label" for=""></label>
                   <div class="col-md-8">
-                    <button id=""  class="btn btn-success">Add</button>
-                    <button  type='button' id='cancel' class="btn btn-danger">Cancel</button>
+                    <button id=""  class="btn btn-danger">delete</button>
+                    <button  type='button' id='cancel' class="btn btn-info">Cancel</button>
                     @if(Session::has('error'))
                       <span style="color:darkred">{{session('error')}}</span>
                     @endif
